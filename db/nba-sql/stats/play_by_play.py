@@ -1,0 +1,123 @@
+"""
+------------------------------------------------------------------------------
+Copyright 2023 Matthew Pope
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+------------------------------------------------------------------------------
+
+
+PlayByPlay object requester and builder.
+"""
+
+import requests
+import urllib.parse
+
+from models import PlayByPlay
+from constants import headers
+from db_utils import insert_many
+
+
+class PlayByPlayRequester:
+
+    url = 'https://stats.nba.com/stats/playbyplayv2'
+
+    def __init__(self, settings):
+        self.settings = settings
+        self.settings.db.bind([PlayByPlay])
+
+    def create_ddl(self):
+        """
+        Initialize the table schema.
+        """
+        self.settings.db.create_tables([PlayByPlay], safe=True)
+
+    def fetch_game(self, game_id):
+        """
+        Build GET REST request to the NBA for a game, iterate over
+        the results and return them.
+        """
+        params = self.build_params(game_id)
+
+        # Encode without safe '+', apparently the NBA likes unsafe url params.
+        params_str = urllib.parse.urlencode(params, safe=':+')
+
+        response = requests.get(url=self.url, headers=headers, params=params_str).json()
+
+        # pulling just the data we want
+        player_info = response['resultSets'][0]['rowSet']
+
+        rows = []
+
+        # looping over data to return.
+        for row in player_info:
+            new_row = {
+                'game_id': row[0],
+                'event_num': row[1],
+                'event_msg_type': row[2],
+                'event_msg_action_type': row[3],
+                'period': row[4],
+                'wc_time': row[5],
+                'home_description': row[7],
+                'neutral_description': row[8],
+                'visitor_description': row[9],
+                'score': row[10],
+                'score_margin': row[11],
+                'player1_id': self.get_null_id(row[13]),
+                'player1_team_id': self.get_null_id(row[15]),
+                'player2_id': self.get_null_id(row[20]),
+                'player2_team_id': self.get_null_id(row[22]),
+                'player3_id': self.get_null_id(row[27]),
+                'player3_team_id': self.get_null_id(row[29])
+            }
+
+            rows.append(new_row)
+        return rows
+
+    def insert_batch(self, rows, player_id_set):
+        """
+        Batch insertion of records.
+        """
+
+        # It looks like the NBA API returns some bad data that
+        # doesn't conform to their advertized schema:
+        # (team_id in the player_id spot).
+        # We can maybe get away with ignoring it.
+        # Check if id is in player_id cache.
+        # We need to preserve the row in general becuase it could still have
+        # good data for the correctly returned players.
+
+        for row in rows:
+            for key in ['player1_id', 'player2_id', 'player3_id']:
+                if row[key] is not None and row[key] not in player_id_set:
+                    row[key] is None
+        insert_many(self.settings, PlayByPlay, rows)
+
+    def build_params(self, game_id):
+        """
+        Create required parameters dict for the request.
+        """
+        return {
+            'EndPeriod': 6,
+            'GameId': game_id,
+            'StartPeriod': 1
+        }
+
+    def get_null_id(self, id):
+        """
+        This endpoint will return a player's id or player's team id as 0
+        sometimes.  We will store 'null', as 0 breaks the foriegn key
+        constraint.
+        """
+        if id == 0:
+            return None
+        return id
