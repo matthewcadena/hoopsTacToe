@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Tac-Toe</title>
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="shortcut icon" href="images/icon.ico">
+</head>
+<body>
+    <div id="header-bar">
+        <h1>NBA Tac-Toe</h1>
+    </div>
+        <div class="search hidden">
+            <span class="search-icon material-symbols-outlined">search</span>
+            <label>
+                <input class="search-input" type="search" id="searchInput" placeholder="Search" autocomplete="off">
+            </label>
+            <div id="search-results-container" class="hidden">
+                <a></a>
+            </div>
+        </div>
+    <div class="grid">
+        <div></div>
+        <div>
+            <img id="col-team-icon" src="{{ game.team1.imageUrl }}" alt="Column 1 team image">
+        </div>
+        <div>
+            <img id="col-team-icon" src="{{ game.team2.imageUrl }}" alt="Column 2 team image">
+        </div>
+        <div>
+            <img id="player-icon" src="{{ game.player.imageUrl }}" alt="Player Icon">
+            <p id="teammate-text">Teammate of {{ game.player.name }}</p>
+        </div>
+        <div>
+            <img id="row-team-icon" src="{{ game.team3.imageUrl }}" alt="Row 1 team image">
+        </div>
+        <div id="1" class="button" onclick="buttonClick('1')"></div>
+        <div id="2" class="button" onclick="buttonClick('2')"></div>
+        <div id="3" class="button" onclick="buttonClick('3')"></div>
+        <div>
+            <img id="row-team-icon" src="{{ game.team4.imageUrl }}" alt="Row 2 team image">
+        </div>
+        <div id="4" class="button" onclick="buttonClick('4')"></div>
+        <div id="5" class="button" onclick="buttonClick('5')"></div>
+        <div id="6" class="button" onclick="buttonClick('6')"></div>
+        <div>
+            <img id="row-team-icon" src="{{ game.team5.imageUrl }}" alt="Row 3 team image">
+        </div>
+        <div id="7" class="button" onclick="buttonClick('7')"></div>
+        <div id="8" class="button" onclick="buttonClick('8')"></div>
+        <div id="9" class="button" onclick="buttonClick('9')"></div>
+    </div>
+    <div id="turn-indicator">Player 1's Turn</div>
+    <div id="game-over-screen">
+        <h2 id="winner-text">Game Over!</h2>
+        <h3 id="winner-subtext"></h3>
+        <button id="new-game-button" onclick="startNewGame()">Start New Game</button>
+    </div>
+    <script src="{% static "js/index.js" %}"></script>
+</body>
+</html>
