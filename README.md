@@ -9,7 +9,7 @@ I created it over winter break of 2023 so that my friends could show off their b
 
 I'm still working on an installation guide. I created the game with my friends in mind,
 but I'd love to open it up for more widespread use in the near future. In the meantime, you can view the game in action 
-[here]([https://youtube.com](https://youtu.be/v2mr_DU-5Fo) or explore the codebase here on GitHub.
+[here](https://youtu.be/v2mr_DU-5Fo) or explore the codebase here on GitHub.
 
 ## Contributing
 
