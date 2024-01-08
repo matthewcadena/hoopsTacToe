@@ -38,6 +38,12 @@ def get_players_data(request):
     return JsonResponse(players_data, safe=False)
 
 
+# helper function for check_game_over, checks to see if game is over with no winner
+def check_cats(board):
+    if 0 not in board[0] and 0 not in board[1] and 0 not in board[2]: return True
+    return False
+
+
 # checks game over by checking all possible winning combinations
 def check_game_over(request):
     game_data = request.session.get('game_instance')
@@ -52,14 +58,18 @@ def check_game_over(request):
                 [board[0][0], board[1][1], board[2][2]],  # diagonal (\)
                 [board[0][2], board[1][1], board[2][0]]]  # diagonal (/)
     # loop through each possible win and check to see if a player has won
+    response = JsonResponse({'game_over': 'false', 'winner': None})
+    if check_cats(board):
+        response = JsonResponse({'game_over': 'true', 'winner': 'cat'})
     for i in range(len(possWins)):
         won = True
         for j in range(len(possWins[i]) - 1):
             if possWins[i][j] == 0 or possWins[i][j] != possWins[i][j + 1]:
                 won = False
         if won:
-            return JsonResponse({'game_over': 'true', 'winner': str(possWins[i][0])})
-    return JsonResponse({'game_over': 'false', 'winner': None})
+            response = JsonResponse({'game_over': 'true', 'winner': str(possWins[i][0])})
+    # check for cats game
+    return response
 
 
 # helper function for check_player, updates the game state to reflect the input from one of the players
@@ -89,11 +99,11 @@ def updateTurn(request, game_instance):
     request.session['game_instance'] = game_instance.to_json()
     game_data = request.session.get('game_instance')
     game_instance = Game.from_json(game_data)
-    print(game_instance.turn)
     return JsonResponse({'result': 'success'})
 
 
 # queries the database to see if a guessed player is a valid answer for the square
+# I currently have it printing the answers for each square because of my limited ball knowledge
 def check_player(request):
     game_data = request.session.get('game_instance')
     game_instance = Game.from_json(game_data)
