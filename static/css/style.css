@@ -1,0 +1,233 @@
+body {
+    font-family: Tahoma, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #eee2de;
+}
+
+#header-bar {
+    background-color: #171717;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+}
+
+h1 {
+    color: #fff;
+    margin: 0;
+    font-family: Tahoma, serif;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 120px);
+    grid-column-gap: 10px;
+    grid-row-gap: 5px;
+    margin-right: 135px;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 2.5px;
+    padding-right: 2.5px;
+    text-align: center;
+    vertical-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    width: 120px;
+    height: 120px;
+    background-color: #36454f;
+    color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-family: Tahoma, sans-serif;
+}
+
+.icon {
+    width: 120px;
+    height: 120px;
+    background-color: #ddd;
+    border: 1px solid #000;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search {
+    --padding: 14px;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    padding: var(--padding);
+    border-radius: 28px;
+    background-color: #f6f6f6;
+    transition: box-shadow 0.25s;
+    z-index: 10;
+    position: relative;
+}
+
+.search:focus-within {
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.75);
+}
+
+.search-input {
+    font-size: 20px;
+    font-family: Tahmoa, sans-serif;
+    color: #333333;
+    margin-left: var(--padding);
+    outline: none;
+    border: none;
+    background: transparent;
+}
+
+.search-icon {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+#search-results-container {
+    border-bottom-right-radius: 28px;
+    border-bottom-left-radius: 28px;
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #f6f6f6;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.9);
+    cursor: pointer;
+}
+
+.hidden {
+    align-items: center;
+    display: none;
+}
+
+#player-icon {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    display: flex;
+    margin-left: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+#row-team-icon {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    display: flex;
+    margin-left: 10px;
+    margin-right: 100px;
+    justify-content: center;
+    align-items: center;
+}
+
+#col-team-icon {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    display: flex;
+    margin-left: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+#teammate-text {
+    font-family: Tahoma, serif;
+    font-size: 12px;
+    text-align: center;
+    display: flex;
+    margin-left: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.check-mark {
+    display: none;
+}
+
+#turn-indicator {
+    background-color: #C9082A;
+    font-family: 'Lexend', sans-serif;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    border-radius: 6px;
+}
+
+#game-over-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 24px;
+    z-index: 999;
+}
+
+#game-over-screen h2 {
+    margin-bottom: -20px;
+    font-family: Tahoma, serif;
+    font-weight: bolder;
+    color: #fff;
+}
+
+#game-over-screen h3 {
+    margin-bottom: 180px;
+    font-family: Tahoma, serif;
+    color: #fff;
+}
+
+#new-game-button {
+    padding: 10px 20px;
+    background-color: #C9082A;
+    font-family: Tahoma, sans-serif;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.home-page-button {
+    padding: 10px 20px;
+    background-color: #171717;
+    font-family: Tahoma, sans-serif;
+    color: #fff;
+    border: none;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    margin: 0 auto;
+    max-width: 90px;
+    align-items: center;
+    justify-content: center;
+}
